@@ -9,6 +9,10 @@ Compares user-provided JSON data with data extracted from PDF invoices using Azu
 - Anonymizes names (keeps first 2 and last 2 characters, replaces middle with `*`)
 - Generates field-by-field comparison suitable for database storage
 
+## Demo
+
+https://github.com/aganiezgoda/json_comparison/raw/master/recording.mp4
+
 ## Prerequisites
 
 - Python 3.10+
