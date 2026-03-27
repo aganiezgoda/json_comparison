@@ -1,0 +1,44 @@
+{
+  "data_input": {
+    "seller_name": "Ja********ki",
+    "buyer_name": "Eu*****************ak",
+    "date": "2026-03-26",
+    "product_sku": 4324325,
+    "amount": 35
+  },
+  "data_extracted": {
+    "seller_name": "Ja********ki",
+    "buyer_name": "Eu*****************ak",
+    "date": "2024-04-15",
+    "product_sku": null,
+    "amount": 1
+  },
+  "field_comparison": {
+    "buyer_name": {
+      "value_a": "Eu*****************ak",
+      "value_b": "Eu*****************ak",
+      "match": true
+    },
+    "date": {
+      "value_a": "2026-03-26",
+      "value_b": "2024-04-15",
+      "match": false
+    },
+    "amount": {
+      "value_a": 35,
+      "value_b": 1,
+      "match": false
+    },
+    "seller_name": {
+      "value_a": "Ja********ki",
+      "value_b": "Ja********ki",
+      "match": true
+    },
+    "product_sku": {
+      "value_a": 4324325,
+      "value_b": null,
+      "match": false
+    }
+  },
+  "all_match": false
+}
