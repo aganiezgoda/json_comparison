@@ -276,10 +276,10 @@ def main():
     try:
         result = process_invoice(pdf_path, input_json)
         
-        print("\n" + "="*60)
-        print("COMPARISON RESULT")
-        print("="*60)
-        print(json.dumps(result, indent=2, ensure_ascii=False))
+        # Save result to file for database import
+        output_file = "comparison_result.json"
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(result, f, indent=2, ensure_ascii=False)
         
         print("\n" + "="*60)
         print("SUMMARY")
@@ -290,11 +290,7 @@ def main():
             status = "✓" if data["match"] else "✗"
             print(f"  {status} {field}: A='{data['value_a']}' | B='{data['value_b']}'")
         
-        # Save result to file for database import
-        output_file = "comparison_result.json"
-        with open(output_file, "w", encoding="utf-8") as f:
-            json.dump(result, f, indent=2, ensure_ascii=False)
-        print(f"\nResult saved to: {output_file}")
+        print(f"\nFull result saved to: {output_file}")
         
     except Exception as e:
         print(f"\nError during processing: {e}")
