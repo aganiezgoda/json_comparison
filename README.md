@@ -81,14 +81,29 @@ The app generates `comparison_result.json` with the following structure:
     "amount": 1
   },
   "field_comparison": {
+    "date": {
+      "value_a": "2026-03-26",
+      "value_b": "2024-04-15",
+      "match": false
+    },
+    "buyer_name": {
+      "value_a": "Eu*****************ak",
+      "value_b": "Eu*****************ak",
+      "match": true
+    },
+    "product_sku": {
+      "value_a": 4324325,
+      "value_b": null,
+      "match": false
+    },
     "seller_name": {
       "value_a": "Ja********ki",
       "value_b": "Ja********ki",
       "match": true
     },
-    "date": {
-      "value_a": "2026-03-26",
-      "value_b": "2024-04-15",
+    "amount": {
+      "value_a": 35,
+      "value_b": 1,
       "match": false
     }
   },
