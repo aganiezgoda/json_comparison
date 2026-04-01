@@ -4,65 +4,114 @@ Compares user-provided JSON data with data extracted from PDF invoices using Azu
 
 ## Features
 
+- **Modern React Frontend** - Attractive, responsive UI with drag & drop PDF upload
 - Extracts structured data from PDF invoices using Azure Document Intelligence (`prebuilt-invoice` model)
 - Uses Azure OpenAI to map extracted fields to your JSON schema
 - Anonymizes names (keeps first 2 and last 2 characters, replaces middle with `*`)
-- Generates field-by-field comparison suitable for database storage
+- Generates field-by-field comparison with visual match/mismatch indicators
+- REST API backend with FastAPI
 
-## Demo
+## Architecture
 
-https://github.com/aganiezgoda/json_comparison/raw/master/recording.mp4
+```
+├── backend/          # FastAPI Python backend
+│   ├── main.py       # API endpoints and processing logic
+│   └── requirements.txt
+├── frontend/         # React + Vite frontend
+│   ├── src/
+│   │   ├── components/
+│   │   └── App.jsx
+│   └── package.json
+└── app.py           # Original CLI version (still works)
+```
 
 ## Prerequisites
 
 - Python 3.10+
+- Node.js 18+
 - Azure Document Intelligence resource
 - Azure OpenAI resource with a deployed model (e.g., `gpt-4o`)
 - Azure CLI logged in (`az login`) for keyless authentication
 
-## Setup
+## Quick Start
 
-1. Create and activate virtual environment:
-   ```powershell
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   ```
+### 1. Backend Setup
 
-2. Install dependencies:
-   ```powershell
-   pip install -r requirements.txt
-   ```
+```powershell
+cd backend
 
-3. Configure environment variables - copy `.env.example` to `.env` and fill in your values:
-   ```
-   DOCUMENT_INTELLIGENCE_ENDPOINT=https://<your-resource>.cognitiveservices.azure.com/
-   AZURE_OPENAI_ENDPOINT=https://<your-resource>.openai.azure.com/
-   AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4o
-   ```
+# Create virtual environment
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 
-4. Place your PDF invoice in the project folder (default: `faktura_example.pdf`)
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment (copy and edit)
+copy .env.example .env
+# Edit .env with your Azure endpoints
+
+# Start backend server
+python main.py
+```
+
+Backend runs at: `http://localhost:8000`
+
+### 2. Frontend Setup
+
+```powershell
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+Frontend runs at: `http://localhost:5173`
 
 ## Usage
+
+1. Open `http://localhost:5173` in your browser
+2. **Upload PDF** - Drag & drop or click to select your invoice PDF
+3. **Enter JSON** - Paste your expected data (use "Paste Example" for template)
+4. **Compare** - Click "Compare Data" and view results
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | Health check |
+| POST | `/api/compare` | Compare PDF with JSON data |
+
+### POST /api/compare
+
+**Form Data:**
+- `pdf_file`: PDF file (multipart/form-data)
+- `json_data`: JSON string with expected values
+
+**Response:**
+```json
+{
+  "data_input": { ... },
+  "data_extracted": { ... },
+  "field_comparison": {
+    "seller_name": { "value_a": "...", "value_b": "...", "match": true }
+  },
+  "all_match": false
+}
+```
+
+## CLI Version
+
+The original command-line version is still available:
 
 ```powershell
 python app.py
 ```
 
-Paste your JSON when prompted, then press Enter twice:
-
-```json
-{
-  "seller_name": "Jan Kowalski",
-  "buyer_name": "Euro Trans Jan Pawlak",
-  "date": "2026-03-26",
-  "product_sku": 4324325,
-  "amount": 35
-}
-```
-
-## Output
-
-The app generates `comparison_result.json` with the following structure:
+## Output Example
 
 ```json
 {
