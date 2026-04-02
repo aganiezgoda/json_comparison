@@ -2,6 +2,8 @@
 
 Compares user-provided JSON data with data extracted from PDF invoices using Azure Document Intelligence and Azure OpenAI.
 
+![App Screenshot](docs/screenshot.png)
+
 ## Features
 
 - **Modern React Frontend** - Attractive, responsive UI with drag & drop PDF upload
@@ -29,9 +31,41 @@ Compares user-provided JSON data with data extracted from PDF invoices using Azu
 
 - Python 3.10+
 - Node.js 18+
-- Azure Document Intelligence resource
-- Azure OpenAI resource with a deployed model (e.g., `gpt-4o`)
+- Azure Document Intelligence resource ([Create one](https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource))
+- Azure OpenAI resource with a deployed model (e.g., `gpt-4o`) ([Create one](https://learn.microsoft.com/azure/ai-services/openai/how-to/create-resource))
 - Azure CLI logged in (`az login`) for keyless authentication
+
+## Environment Variables
+
+Create a `.env` file in the `backend/` folder (or project root). See `backend/.env.example`:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `DOCUMENT_INTELLIGENCE_ENDPOINT` | Azure Document Intelligence endpoint URL | `https://<name>.cognitiveservices.azure.com/` |
+| `AZURE_OPENAI_ENDPOINT` | Azure OpenAI endpoint URL | `https://<name>.openai.azure.com/` |
+| `AZURE_OPENAI_DEPLOYMENT_NAME` | Name of your deployed model | `gpt-4o` |
+
+## Input JSON Schema
+
+The app expects JSON with these fields:
+
+```json
+{
+  "seller_name": "Jan Kowalski",
+  "buyer_name": "Euro Trans Jan Pawlak",
+  "date": "2026-03-26",
+  "product_sku": 4324325,
+  "amount": 35
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `seller_name` | string | Name of the seller/vendor |
+| `buyer_name` | string | Name of the buyer/customer |
+| `date` | string | Invoice date (YYYY-MM-DD format) |
+| `product_sku` | number | Product SKU/code |
+| `amount` | number | Quantity/amount |
 
 ## Quick Start
 
@@ -177,3 +211,44 @@ Uses `DefaultAzureCredential` (keyless authentication). Ensure you're logged in 
 ```powershell
 az login
 ```
+
+## Important Notes
+
+- **Both servers required** - The backend (port 8000) and frontend (port 5173) must run simultaneously
+- **PDF format** - Upload only PDF invoices; the app uses the `prebuilt-invoice` model
+- **Vite proxy** - The frontend proxies `/api/*` requests to the backend automatically
+- **.env location** - Place your `.env` file in `backend/` or the project root (app checks both)
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| `DOCUMENT_INTELLIGENCE_ENDPOINT not set` | Ensure `.env` file exists with correct variables |
+| `401 Unauthorized` | Run `az login` to authenticate with Azure |
+| `Network Error` on frontend | Verify backend is running on port 8000 |
+| `Invalid JSON format` | Check your JSON syntax (use the Format button) |
+| Empty extraction results | Ensure the PDF is a valid invoice document |
+
+## Production Deployment
+
+### Build Frontend
+
+```powershell
+cd frontend
+npm run build
+```
+
+Static files are output to `frontend/dist/`. Serve these with any static file server or integrate with the FastAPI backend.
+
+### Run Backend with Uvicorn
+
+```powershell
+cd backend
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+For production, consider using a process manager like `gunicorn` with uvicorn workers.
+
+## License
+
+MIT
