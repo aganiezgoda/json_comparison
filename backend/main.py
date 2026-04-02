@@ -44,8 +44,8 @@ app.add_middleware(
 
 # Response models
 class FieldComparison(BaseModel):
-    value_a: Optional[str | int | float]
-    value_b: Optional[str | int | float]
+    value_input: Optional[str | int | float]
+    value_extracted: Optional[str | int | float]
     match: bool
 
 
@@ -195,18 +195,18 @@ def compare_json(data_a: dict, data_b: dict) -> dict:
     all_fields = set(data_a.keys()) | set(data_b.keys())
     
     for field in all_fields:
-        value_a = data_a.get(field)
-        value_b = data_b.get(field)
+        value_input = data_a.get(field)
+        value_extracted = data_b.get(field)
         
         # Normalize values for comparison (handle type differences)
-        normalized_a = str(value_a).strip() if value_a is not None else None
-        normalized_b = str(value_b).strip() if value_b is not None else None
+        normalized_a = str(value_input).strip() if value_input is not None else None
+        normalized_b = str(value_extracted).strip() if value_extracted is not None else None
         
         match = normalized_a == normalized_b
         
         comparison[field] = {
-            "value_a": value_a,
-            "value_b": value_b,
+            "value_input": value_input,
+            "value_extracted": value_extracted,
             "match": match
         }
     

@@ -44,10 +44,10 @@ function ComparisonResult({ result }) {
               <tr key={field} className={data.match ? 'match' : 'mismatch'}>
                 <td className="field-name">{formatFieldName(field)}</td>
                 <td className="field-value">
-                  <code>{formatValue(data.value_a)}</code>
+                  <code>{formatValue(data.value_input)}</code>
                 </td>
                 <td className="field-value">
-                  <code>{formatValue(data.value_b)}</code>
+                  <code>{formatValue(data.value_extracted)}</code>
                 </td>
                 <td className="field-status">
                   {data.match ? (

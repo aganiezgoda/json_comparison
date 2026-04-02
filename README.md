@@ -131,7 +131,7 @@ Frontend runs at: `http://localhost:5173`
   "data_input": { ... },
   "data_extracted": { ... },
   "field_comparison": {
-    "seller_name": { "value_a": "...", "value_b": "...", "match": true }
+    "seller_name": { "value_input": "...", "value_extracted": "...", "match": true }
   },
   "all_match": false
 }
@@ -165,28 +165,28 @@ python app.py
   },
   "field_comparison": {
     "date": {
-      "value_a": "2026-03-26",
-      "value_b": "2024-04-15",
+      "value_input": "2026-03-26",
+      "value_extracted": "2024-04-15",
       "match": false
     },
     "buyer_name": {
-      "value_a": "Eu*****************ak",
-      "value_b": "Eu*****************ak",
+      "value_input": "Eu*****************ak",
+      "value_extracted": "Eu*****************ak",
       "match": true
     },
     "product_sku": {
-      "value_a": 4324325,
-      "value_b": null,
+      "value_input": 4324325,
+      "value_extracted": null,
       "match": false
     },
     "seller_name": {
-      "value_a": "Ja********ki",
-      "value_b": "Ja********ki",
+      "value_input": "Ja********ki",
+      "value_extracted": "Ja********ki",
       "match": true
     },
     "amount": {
-      "value_a": 35,
-      "value_b": 1,
+      "value_input": 35,
+      "value_extracted": 1,
       "match": false
     }
   },

@@ -163,18 +163,18 @@ def compare_json(data_a: dict, data_b: dict) -> dict:
     all_fields = set(data_a.keys()) | set(data_b.keys())
     
     for field in all_fields:
-        value_a = data_a.get(field)
-        value_b = data_b.get(field)
+        value_input = data_a.get(field)
+        value_extracted = data_b.get(field)
         
         # Normalize values for comparison (handle type differences)
-        normalized_a = str(value_a).strip() if value_a is not None else None
-        normalized_b = str(value_b).strip() if value_b is not None else None
+        normalized_a = str(value_input).strip() if value_input is not None else None
+        normalized_b = str(value_extracted).strip() if value_extracted is not None else None
         
         match = normalized_a == normalized_b
         
         comparison[field] = {
-            "value_a": value_a,
-            "value_b": value_b,
+            "value_input": value_input,
+            "value_extracted": value_extracted,
             "match": match
         }
     
@@ -288,7 +288,7 @@ def main():
         print("\nField-by-field comparison:")
         for field, data in result["field_comparison"].items():
             status = "✓" if data["match"] else "✗"
-            print(f"  {status} {field}: A='{data['value_a']}' | B='{data['value_b']}'")
+            print(f"  {status} {field}: Input='{data['value_input']}' | Extracted='{data['value_extracted']}'")
         
         print(f"\nFull result saved to: {output_file}")
         
